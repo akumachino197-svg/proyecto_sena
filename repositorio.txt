@@ -1,0 +1,3 @@
+Repositorio GitHub: pendiente de crear y publicar.
+
+El repositorio local se encuentra en esta carpeta. Actualiza este archivo con la URL publica cuando se cree el repositorio remoto.
