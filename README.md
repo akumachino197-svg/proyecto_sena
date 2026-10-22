@@ -40,6 +40,37 @@ El permiso para ejecutar scripts se limita a ese proceso de PowerShell; no cambi
 
 Visita `http://localhost:8080`. Para detenerla, usa `Ctrl+C` en la terminal.
 
+## Guia para el instructor: ejecutar desde otro equipo
+
+La URL `http://localhost:8080` funciona en el mismo computador donde se ejecuta Java; no es un sitio publicado en Internet. Para probar el modulo desde otro computador, el instructor debe iniciar Java y MySQL en ese equipo:
+
+1. Instalar JDK 25 y XAMPP. Iniciar MySQL en el panel de XAMPP.
+2. Descargar el proyecto desde [el repositorio GitHub](https://github.com/akumachino197-svg/proyecto_sena) con **Code > Download ZIP**, o clonarlo:
+
+   ```powershell
+   git clone https://github.com/akumachino197-svg/proyecto_sena.git
+   Set-Location .\proyecto_sena
+   ```
+
+3. Abrir PowerShell en la carpeta del proyecto y crear la base y tabla. El siguiente comando usa la instalacion predeterminada de XAMPP, sin contrasena para `root`. Si XAMPP esta en otra ruta o MySQL usa credenciales distintas, ajustar el comando:
+
+   ```powershell
+   cmd /c '"C:\xampp\mysql\bin\mysql.exe" --user=root < database\schema.sql'
+   ```
+
+4. Iniciar la aplicacion desde esa misma carpeta:
+
+   ```powershell
+   $env:DB_URL = "jdbc:mysql://localhost:3306/sena_empleados?serverTimezone=UTC"
+   $env:DB_USER = "root"
+   $env:DB_PASSWORD = ""
+   powershell -NoProfile -ExecutionPolicy Bypass -File .\run.ps1
+   ```
+
+5. Abrir `http://localhost:8080` en el navegador **del computador donde se inicio la aplicacion**. El profesor podra realizar las cuatro operaciones CRUD. `Ctrl+C` detiene la aplicacion.
+
+El conector JDBC ya esta incluido en el proyecto. La computadora usada para la prueba necesita conexion local a MySQL, pero no publica la base de datos ni requiere un servicio de hosting. El repositorio de GitHub contiene el codigo fuente y no es, por si solo, una pagina web desplegada.
+
 ## Funcionalidades
 
 - Crear empleados con nombre, documento, correo y telefono.
@@ -81,4 +112,4 @@ Se inicio MySQL/MariaDB de XAMPP (MariaDB 10.4.32, puerto 3306), se ejecuto el e
 
 ## Git
 
-Los commits locales se configuran con el nombre y correo del aprendiz. Para publicar el proyecto, crea un repositorio en GitHub y agrega su URL al archivo `repositorio.txt`. No publiques contrasenas ni archivos de configuracion local.
+El repositorio remoto esta en [GitHub](https://github.com/akumachino197-svg/proyecto_sena). Los commits del aprendiz se registran con la identidad Git configurada y la rama principal es `main`. No publiques contrasenas ni archivos de configuracion local.
