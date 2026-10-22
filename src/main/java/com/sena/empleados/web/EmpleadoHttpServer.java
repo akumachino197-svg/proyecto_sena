@@ -100,10 +100,10 @@ public final class EmpleadoHttpServer {
         if (!errorConsulta.isEmpty()) {
             mensaje = mensaje.isEmpty() ? errorConsulta : mensaje + " " + errorConsulta;
         }
-        responder(exchange, status, renderizar(empleados, filtro, mensaje));
+        responder(exchange, status, renderizar(empleados, filtro, mensaje, errorConsulta.isEmpty()));
     }
 
-    private static String renderizar(List<Empleado> empleados, String filtro, String mensaje) {
+    private static String renderizar(List<Empleado> empleados, String filtro, String mensaje, boolean conexionActiva) {
         StringBuilder filas = new StringBuilder();
         for (Empleado empleado : empleados) {
             filas.append("""
@@ -134,6 +134,9 @@ public final class EmpleadoHttpServer {
         }
 
         String aviso = mensaje.isEmpty() ? "" : "<div class=\"notice\" role=\"status\">" + escapar(mensaje) + "</div>";
+        String estadoConexion = conexionActiva
+                ? "<div class=\"connection active\">Conexion JDBC activa con MySQL/MariaDB.</div>"
+                : "<div class=\"connection inactive\">Sin conexion JDBC: inicia MySQL y verifica la configuracion.</div>";
         return """
                 <!doctype html>
                 <html lang="es">
@@ -151,6 +154,8 @@ public final class EmpleadoHttpServer {
                     button{border:0;border-radius:6px;padding:10px 14px;background:#1769aa;color:white;font-weight:bold;cursor:pointer}
                     button:hover{filter:brightness(.92)}.primary{margin-top:14px}.secondary{background:#1769aa}.danger{background:#a83434}
                     .notice{padding:12px 14px;border-radius:7px;background:#e7f4eb;color:#175b2c;margin-bottom:18px}
+                    .connection{padding:11px 14px;border-radius:7px;margin-bottom:18px;font-weight:bold}
+                    .active{background:#e7f4eb;color:#175b2c}.inactive{background:#fff0ee;color:#922d24}
                     .toolbar{display:flex;gap:10px;margin-bottom:14px}.toolbar input{max-width:360px}.table-wrap{overflow:auto}
                     table{border-collapse:collapse;width:100%%;min-width:900px}th,td{text-align:left;padding:10px 8px;border-bottom:1px solid #e4eaf1;vertical-align:top}
                     th{font-size:13px;color:#4d6078}.edit-form{display:grid;grid-template-columns:1fr 1fr 1.4fr 1fr auto;gap:7px}
@@ -163,6 +168,7 @@ public final class EmpleadoHttpServer {
                 <body>
                   <header><h1>Sistema de Gestion de Empleados</h1><p>Modulo CRUD conectado a MySQL mediante JDBC</p></header>
                   <main class="container">
+                    %s
                     %s
                     <section class="card">
                       <h2>Registrar empleado</h2>
@@ -192,7 +198,7 @@ public final class EmpleadoHttpServer {
                   </main>
                 </body>
                 </html>
-                """.formatted(aviso, escapar(filtro), filas);
+                """.formatted(estadoConexion, aviso, escapar(filtro), filas);
     }
 
     private static Map<String, String> leerFormulario(HttpExchange exchange) throws IOException {

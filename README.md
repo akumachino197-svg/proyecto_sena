@@ -6,7 +6,7 @@ Prototipo web local en Java para registrar, consultar, actualizar y eliminar emp
 
 - JDK 25 (o Java 17 o superior).
 - XAMPP con MySQL/MariaDB.
-- MySQL Connector/J. El proyecto busca el controlador en `lib/`.
+- MySQL Connector/J 26.7.0, incluido en `lib/`.
 - Git para versionar el proyecto.
 
 No se requiere Maven ni un servidor web separado. La aplicacion inicia un servidor HTTP local en `http://localhost:8080`.
@@ -83,6 +83,8 @@ El conector JDBC ya esta incluido en el proyecto. La computadora usada para la p
 ## Estructura
 
 ```text
+.classpath
+.project
 src/main/java/com/sena/empleados/
   config/DatabaseConnection.java
   dao/EmpleadoDAO.java
@@ -113,3 +115,9 @@ Se inicio MySQL/MariaDB de XAMPP (MariaDB 10.4.32, puerto 3306), se ejecuto el e
 ## Git
 
 El repositorio remoto esta en [GitHub](https://github.com/akumachino197-svg/proyecto_sena). Los commits del aprendiz se registran con la identidad Git configurada y la rama principal es `main`. No publiques contrasenas ni archivos de configuracion local.
+
+## Informe y evidencias de la actividad
+
+El informe tecnico final (Word y PDF) esta en `docs/informe_tecnico.docx` y `docs/informe_tecnico.pdf`. Las capturas autenticas de la conexion JDBC, el CRUD, MySQL/phpMyAdmin y el proyecto en VS Code estan en `evidencias/`.
+
+El repositorio GitHub esta marcado como **privado**. Si el instructor debe consultar el codigo directamente desde GitHub, el propietario debe concederle acceso de lectura desde la configuracion del repositorio. Alternativamente, entrega el ZIP del proyecto con el informe y las evidencias. La direccion `localhost:8080` no se comparte por Internet: el profesor necesita ejecutar Java y MySQL localmente siguiendo la guia anterior.
