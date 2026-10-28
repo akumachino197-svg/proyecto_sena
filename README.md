@@ -9,7 +9,7 @@ Prototipo web local en Java para registrar, consultar, actualizar y eliminar emp
 - MySQL Connector/J 26.7.0, incluido en `lib/`.
 - Git para versionar el proyecto.
 
-No se requiere Maven ni un servidor web separado. La aplicacion inicia un servidor HTTP local en `http://localhost:8080`.
+No se requiere Maven ni un servidor web separado. La aplicacion inicia un servidor HTTP local. `run.ps1` comprueba el puerto configurado (8080 por defecto) y, si esta ocupado, busca el siguiente puerto libre. La aplicacion imprime la direccion exacta al iniciar.
 
 ## Preparar la base de datos
 
@@ -32,13 +32,12 @@ Abre PowerShell en la carpeta del proyecto y ejecuta:
 $env:DB_URL = "jdbc:mysql://localhost:3306/sena_empleados?serverTimezone=UTC"
 $env:DB_USER = "root"
 $env:DB_PASSWORD = ""
-$env:APP_PORT = "8080"
 powershell -NoProfile -ExecutionPolicy Bypass -File .\run.ps1
 ```
 
-El permiso para ejecutar scripts se limita a ese proceso de PowerShell; no cambia la politica permanente del equipo. Si el usuario de MySQL tiene contrasena, asignala solo en la variable local `DB_PASSWORD`; no la guardes en archivos ni la publiques en GitHub. El script compila el codigo y arranca la aplicacion.
+El script compila el codigo y comprueba el puerto antes de arrancar la aplicacion. Por defecto intenta usar `8080`; si esta ocupado, usa el siguiente puerto libre y lo informa en la terminal. Para elegir otro puerto inicial, define `APP_PORT` antes de ejecutar el script; si tambien esta ocupado, se busca desde ese numero.
 
-Visita `http://localhost:8080`. Para detenerla, usa `Ctrl+C` en la terminal.
+El permiso para ejecutar scripts se limita a ese proceso de PowerShell; no cambia la politica permanente del equipo. Si el usuario de MySQL tiene contrasena, asignala solo en la variable local `DB_PASSWORD`; no la guardes en archivos ni la publiques en GitHub. Visita la URL que imprime la aplicacion (por ejemplo, `http://localhost:8080`). Para detenerla, usa `Ctrl+C` en la terminal.
 
 ## Guia para el instructor: ejecutar desde otro equipo
 
@@ -67,7 +66,7 @@ La URL `http://localhost:8080` funciona en el mismo computador donde se ejecuta 
    powershell -NoProfile -ExecutionPolicy Bypass -File .\run.ps1
    ```
 
-5. Abrir `http://localhost:8080` en el navegador **del computador donde se inicio la aplicacion**. El profesor podra realizar las cuatro operaciones CRUD. `Ctrl+C` detiene la aplicacion.
+5. Abrir en el navegador **del computador donde se inicio la aplicacion** la direccion que aparezca en la terminal. Normalmente sera `http://localhost:8080`; si el puerto estaba ocupado, la aplicacion informara el alternativo. `Ctrl+C` detiene la aplicacion.
 
 El conector JDBC ya esta incluido en el proyecto. La computadora usada para la prueba necesita conexion local a MySQL, pero no publica la base de datos ni requiere un servicio de hosting. El repositorio de GitHub contiene el codigo fuente y no es, por si solo, una pagina web desplegada.
 
